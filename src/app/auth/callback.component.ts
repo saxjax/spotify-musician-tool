@@ -21,12 +21,23 @@ export class AuthCallbackComponent implements OnInit {
   error: string | null = null;
 
   async ngOnInit(): Promise<void> {
-    const result = await this.auth.handleCallbackFromUrl(window.location.href);
-    if (result.ok) {
-      // Navigate to home (or wherever makes sense)
-      this.router.navigateByUrl('/');
-    } else {
-      this.error = result.error ?? 'Unknown error';
+    console.log('🔄 AuthCallbackComponent ngOnInit started');
+    console.log('📍 Current URL:', window.location.href);
+    
+    try {
+      const result = await this.auth.handleCallbackFromUrl(window.location.href);
+      console.log('🔍 Auth result:', result);
+      
+      if (result.ok) {
+        console.log('✅ Auth successful, navigating to home');
+        this.router.navigateByUrl('/');
+      } else {
+        console.log('❌ Auth failed:', result.error);
+        this.error = result.error ?? 'Unknown error';
+      }
+    } catch (error) {
+      console.log('💥 Exception in ngOnInit:', error);
+      this.error = 'Authentication failed with exception';
     }
   }
 }

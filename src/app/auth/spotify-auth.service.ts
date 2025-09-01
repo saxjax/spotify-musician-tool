@@ -29,6 +29,10 @@ export class SpotifyAuthService {
 
   // Public API
   async startLogin(): Promise<void> {
+    const startOrigin = window.location.origin;
+    localStorage.setItem('debug_start_origin', startOrigin);
+    localStorage.setItem('debug_redirect_uri', SPOTIFY_REDIRECT_URI);
+
     const verifier = this.generateCodeVerifier();
     const challenge = await this.generateCodeChallenge(verifier);
     const state = this.randomState();
@@ -50,29 +54,60 @@ export class SpotifyAuthService {
   }
 
   async handleCallbackFromUrl(url: string): Promise<{ ok: boolean; error?: string }> {
+    // Debug info
+    const debugInfo = {
+      startOrigin: localStorage.getItem('debug_start_origin'),
+      redirectUri: localStorage.getItem('debug_redirect_uri'),
+      currentUrl: url,
+      currentOrigin: window.location.origin,
+      hasSessionStorage: !!sessionStorage.getItem(STATE_STORAGE_KEY)
+    };
+    console.log('Callback debug info:', debugInfo);
+
     const u = new URL(url, window.location.origin);
     const code = u.searchParams.get('code');
     const state = u.searchParams.get('state');
     const storedState = sessionStorage.getItem(STATE_STORAGE_KEY);
     const verifier = sessionStorage.getItem(VERIFIER_STORAGE_KEY);
 
-    if (!code) return { ok: false, error: 'Missing authorization code' };
-    if (!state || !storedState || state !== storedState) return { ok: false, error: 'Invalid state' };
-    if (!verifier) return { ok: false, error: 'Missing PKCE verifier' };
+    console.log('Auth validation:', {
+      hasCode: !!code,
+      hasState: !!state,
+      hasStoredState: !!storedState,
+      stateMatches: state === storedState,
+      hasVerifier: !!verifier
+    });
 
+    if (!code) {
+      console.log('❌ Missing authorization code');
+      return { ok: false, error: 'Missing authorization code' };
+    }
+    if (!state || !storedState || state !== storedState) {
+      console.log('❌ Invalid state - sent:', state, 'stored:', storedState);
+      return { ok: false, error: 'Invalid state' };
+    }
+    if (!verifier) {
+      console.log('❌ Missing PKCE verifier');
+      return { ok: false, error: 'Missing PKCE verifier' };
+    }
+
+    console.log('✅ All validations passed, exchanging token...');
     try {
       const token = await this.exchangeCodeForToken({ code, verifier });
+      console.log('✅ Token exchange successful');
       this.setToken(token);
       // Clear one-time values
       sessionStorage.removeItem(STATE_STORAGE_KEY);
       sessionStorage.removeItem(VERIFIER_STORAGE_KEY);
+      // Clear debug info
+      localStorage.removeItem('debug_start_origin');
+      localStorage.removeItem('debug_redirect_uri');
       return { ok: true };
     } catch (e: any) {
+      console.log('❌ Token exchange failed:', e);
       return { ok: false, error: e?.message ?? 'Token exchange failed' };
     }
-  }
-
-  async refresh(): Promise<boolean> {
+  }  async refresh(): Promise<boolean> {
     const current = this._token();
     if (!current?.refresh_token) return false;
     try {
