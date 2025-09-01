@@ -6,7 +6,7 @@ import { SpotifyAuthService } from './spotify-auth.service';
   selector: 'app-auth-callback',
   template: `
     <section class="auth-callback">
-      <h2>Finishing sign-in…</h2>
+      <h2>Finishing sign-in, not quite there yet…</h2>
       @if (error) {
         <p>Error: {{ error }}</p>
       }
@@ -23,11 +23,11 @@ export class AuthCallbackComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     console.log('🔄 AuthCallbackComponent ngOnInit started');
     console.log('📍 Current URL:', window.location.href);
-    
+
     try {
       const result = await this.auth.handleCallbackFromUrl(window.location.href);
       console.log('🔍 Auth result:', result);
-      
+
       if (result.ok) {
         console.log('✅ Auth successful, navigating to home');
         this.router.navigateByUrl('/');
