@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SpotifyAuthService } from './spotify-auth.service';
+import { SpotifyPlayerService } from '../player/spotify-player.service';
+import { SpotifyUserService } from '../user/spotify-user.service';
 
 @Component({
   selector: 'app-auth-callback',
@@ -18,6 +20,8 @@ import { SpotifyAuthService } from './spotify-auth.service';
 export class AuthCallbackComponent implements OnInit {
   private auth = inject(SpotifyAuthService);
   private router = inject(Router);
+  private spotifyPlayer = inject(SpotifyPlayerService);
+  private userService = inject(SpotifyUserService);
   error: string | null = null;
 
   async ngOnInit(): Promise<void> {
@@ -29,7 +33,26 @@ export class AuthCallbackComponent implements OnInit {
       console.log('🔍 Auth result:', result);
 
       if (result.ok) {
-        console.log('✅ Auth successful, navigating to home');
+        console.log('✅ Auth successful, setting up services');
+        
+        // Set the access token in both services
+        const token = this.auth.accessToken();
+        if (token) {
+          this.spotifyPlayer.setAccessToken(token);
+          console.log('🎵 Access token set in SpotifyPlayerService');
+          
+          // Fetch user profile
+          this.userService.fetchUserProfile().subscribe({
+            next: (profile) => {
+              console.log('👤 User profile loaded:', profile.display_name);
+            },
+            error: (error) => {
+              console.log('❌ Failed to load user profile:', error);
+            }
+          });
+        }
+        
+        console.log('🏠 Navigating to home');
         this.router.navigateByUrl('/');
       } else {
         console.log('❌ Auth failed:', result.error);

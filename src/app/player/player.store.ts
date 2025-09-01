@@ -44,6 +44,10 @@ export class PlayerStore {
     this._isPlaying.update(playing => !playing);
   }
 
+  setIsPlaying(isPlaying: boolean): void {
+    this._isPlaying.set(isPlaying);
+  }
+
   setSpeed(speed: number): void {
     this._speed.set(speed);
   }
