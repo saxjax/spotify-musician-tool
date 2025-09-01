@@ -40,5 +40,9 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# SSL certificates (project-specific, don't commit)
+/ssl/
+
 # Local environment override (do not commit)
 src/environments/environment.local.ts

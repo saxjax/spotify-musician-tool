@@ -4,13 +4,13 @@ export default defineConfig({
   testDir: 'e2e',
   timeout: 30000,
   use: {
-    baseURL: 'https://localhost:4200',
+    baseURL: 'https://127.0.0.1:4200',
     trace: 'on-first-retry',
     ignoreHTTPSErrors: true
   },
   webServer: {
     command: 'npm run dev',
-    url: 'https://localhost:4200',
+    url: 'https://127.0.0.1:4200',
     reuseExistingServer: true,
     ignoreHTTPSErrors: true
   },

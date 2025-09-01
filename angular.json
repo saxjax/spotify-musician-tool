@@ -75,7 +75,9 @@
           "builder": "@angular/build:dev-server",
           "options": {
             "ssl": true,
-            "host": "localhost",
+            "sslCert": "ssl/localhost-cert.pem",
+            "sslKey": "ssl/localhost-key.pem",
+            "host": "127.0.0.1",
             "port": 4200
           },
           "configurations": {
