@@ -40,3 +40,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+# Local environment override (do not commit)
+src/environments/environment.local.ts
