@@ -4,9 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "dev": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
+    "e2e:ui": "playwright test --ui"
   },
   "prettier": {
     "printWidth": 100,
@@ -35,13 +40,20 @@
     "@angular/build": "^20.2.1",
     "@angular/cli": "^20.2.1",
     "@angular/compiler-cli": "^20.2.0",
+    "@playwright/test": "^1.55.0",
+    "@testing-library/angular": "^18.0.0",
+    "@testing-library/jest-dom": "^6.8.0",
     "@types/jasmine": "~5.1.0",
+    "@types/jest": "^30.0.0",
     "jasmine-core": "~5.9.0",
+    "jest": "^30.1.2",
+    "jest-preset-angular": "^15.0.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "ts-jest": "^29.4.1",
     "typescript": "~5.9.2"
   }
 }
