@@ -24,6 +24,44 @@ export interface SpotifyPlaybackState {
   timestamp: number;
 }
 
+export interface SpotifyTrack {
+  id: string;
+  name: string;
+  uri: string;
+  duration_ms: number;
+  explicit: boolean;
+  external_urls: {
+    spotify: string;
+  };
+  artists: Array<{
+    id: string;
+    name: string;
+    uri: string;
+  }>;
+  album: {
+    id: string;
+    name: string;
+    uri: string;
+    images: Array<{
+      url: string;
+      height: number;
+      width: number;
+    }>;
+  };
+}
+
+export interface SpotifySearchResult {
+  tracks: {
+    href: string;
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+    items: SpotifyTrack[];
+  };
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -120,6 +158,91 @@ export class SpotifyPlayerService {
     ).pipe(
       catchError(error => {
         console.error('Error resuming playback:', error);
+        return EMPTY;
+      })
+    );
+  }
+
+  /**
+   * Search for tracks
+   */
+  searchTracks(query: string, limit: number = 20): Observable<SpotifySearchResult> {
+    const params = new URLSearchParams({
+      q: query,
+      type: 'track',
+      limit: limit.toString(),
+      market: 'from_token' // Use user's market
+    });
+
+    return this.http.get<SpotifySearchResult>(
+      `${this.SPOTIFY_API_BASE}/search?${params}`,
+      { headers: this.getHeaders() }
+    ).pipe(
+      catchError(error => {
+        console.error('Error searching tracks:', error);
+        return EMPTY;
+      })
+    );
+  }
+
+  /**
+   * Play a specific track
+   */
+  playTrack(trackUri: string, deviceId?: string): Observable<void> {
+    const body: any = {
+      uris: [trackUri]
+    };
+
+    if (deviceId) {
+      body.device_id = deviceId;
+    }
+
+    return this.http.put<void>(
+      `${this.SPOTIFY_API_BASE}/me/player/play`,
+      body,
+      { headers: this.getHeaders() }
+    ).pipe(
+      catchError(error => {
+        console.error('Error playing track:', error);
+        return EMPTY;
+      })
+    );
+  }
+
+  /**
+   * Play multiple tracks
+   */
+  playTracks(trackUris: string[], deviceId?: string): Observable<void> {
+    const body: any = {
+      uris: trackUris
+    };
+
+    if (deviceId) {
+      body.device_id = deviceId;
+    }
+
+    return this.http.put<void>(
+      `${this.SPOTIFY_API_BASE}/me/player/play`,
+      body,
+      { headers: this.getHeaders() }
+    ).pipe(
+      catchError(error => {
+        console.error('Error playing tracks:', error);
+        return EMPTY;
+      })
+    );
+  }
+
+  /**
+   * Get available devices
+   */
+  getAvailableDevices(): Observable<{ devices: Array<{ id: string; name: string; type: string; is_active: boolean; }> }> {
+    return this.http.get<{ devices: Array<{ id: string; name: string; type: string; is_active: boolean; }> }>(
+      `${this.SPOTIFY_API_BASE}/me/player/devices`,
+      { headers: this.getHeaders() }
+    ).pipe(
+      catchError(error => {
+        console.error('Error getting devices:', error);
         return EMPTY;
       })
     );

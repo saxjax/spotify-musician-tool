@@ -37,6 +37,14 @@ import { SpotifyPlayerService } from './spotify-player.service';
           [class.playing]="playerStore.isPlaying()">
           {{ playerStore.isPlaying() ? '⏸️' : '▶️' }}
         </button>
+
+        <button 
+          (click)="startPlayingCurrentSong()"
+          class="start-playing-btn"
+          [disabled]="playerStore.isPlaying()"
+          title="Start playing the currently selected song">
+          🎵 Start Playing
+        </button>
         
         <button 
           (click)="spotifyPlayer.seekRelative(10000)"
@@ -213,6 +221,28 @@ import { SpotifyPlayerService } from './spotify-player.service';
 
     .play-pause-btn:hover {
       background: #1ed760;
+    }
+
+    .start-playing-btn {
+      padding: 10px 15px;
+      border: 1px solid #1db954;
+      border-radius: 4px;
+      background: #1db954;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .start-playing-btn:hover:not(:disabled) {
+      background: #1ed760;
+    }
+
+    .start-playing-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #6c757d;
     }
 
     .seek-btn {
@@ -463,5 +493,18 @@ export class AbLoopControlsComponent implements OnInit, OnDestroy {
     const newPosition = Math.floor(duration * percentage);
     
     this.spotifyPlayer.seekToPosition(newPosition).subscribe();
+  }
+
+  startPlayingCurrentSong(): void {
+    console.log('🎵 Starting playback of current song');
+    this.spotifyPlayer.resumePlayback().subscribe({
+      next: () => {
+        console.log('✅ Playback started successfully');
+      },
+      error: (error) => {
+        console.error('❌ Failed to start playback:', error);
+        alert('Failed to start playback. Make sure Spotify is open and a song is selected.');
+      }
+    });
   }
 }

@@ -4,16 +4,23 @@ import { SpotifyPlayerService } from '../player/spotify-player.service';
 import { SpotifyUserService } from '../user/spotify-user.service';
 import { AbLoopControlsComponent } from '../player/ab-loop-controls.component';
 import { UserProfileComponent } from '../user/user-profile.component';
+import { MusicSearchComponent } from '../player/music-search.component';
+import { QuickStartPlaybackComponent } from '../player/quick-start-playback.component';
 
 @Component({
   selector: 'app-home',
-  imports: [AbLoopControlsComponent, UserProfileComponent],
+  imports: [AbLoopControlsComponent, UserProfileComponent, MusicSearchComponent, QuickStartPlaybackComponent],
   template: `
     <section class="home">
       @if (auth.isAuthenticated()) {
         <div class="authenticated-content">
           <h2>🎵 Spotify Musician Tool</h2>
-          <p>Connected to Spotify! Your profile and AB looping controls are ready.</p>
+          <p>Connected to Spotify! Control playback and practice with AB looping.</p>
+          
+          <!-- Quick Start Section - Most Prominent -->
+          <div class="quick-start-section">
+            <app-quick-start-playback></app-quick-start-playback>
+          </div>
           
           <!-- User Profile Section -->
           <div class="profile-section">
@@ -23,18 +30,27 @@ import { UserProfileComponent } from '../user/user-profile.component';
           
           <!-- AB Loop Controls Section -->
           <div class="controls-section">
-            <h3>Playback & AB Loop Controls</h3>
-            <p>Start playing a track in Spotify and use the controls below to practice with AB looping.</p>
+            <h3>AB Loop Controls</h3>
+            <p>Once music is playing, use these controls to practice specific sections.</p>
             <app-ab-loop-controls></app-ab-loop-controls>
+          </div>
+
+          <!-- Music Search & Play Section -->
+          <div class="search-section">
+            <h3>Search & Play Different Songs</h3>
+            <details>
+              <summary>Click to expand music search</summary>
+              <app-music-search></app-music-search>
+            </details>
           </div>
           
           <div class="instructions">
-            <h3>How to use AB Looping:</h3>
+            <h3>How to use this tool:</h3>
             <ol>
-              <li>Start playing a track in Spotify</li>
-              <li>Click "Set A" at the beginning of the section you want to practice</li>
-              <li>Click "Set B" at the end of the section</li>
-              <li>Click "Start Loop" to begin continuous looping</li>
+              <li><strong>Quick Start:</strong> Select any song in Spotify, then click "Start Playing" above</li>
+              <li><strong>Set Loop Points:</strong> While playing, click "Set A" and "Set B" to mark the section you want to practice</li>
+              <li><strong>Loop:</strong> Click "Start Loop" to continuously repeat the selected section</li>
+              <li><strong>Practice:</strong> Use the controls to jump to loop points, skip around, or adjust playback</li>
             </ol>
             <p><strong>Note:</strong> You need Spotify Premium for playback control to work.</p>
           </div>
@@ -67,12 +83,22 @@ import { UserProfileComponent } from '../user/user-profile.component';
       color: #666;
     }
     
+    .quick-start-section {
+      margin-bottom: 3rem;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 2px solid #1db954;
+    }
+    
     .profile-section,
+    .search-section,
     .controls-section {
       margin-bottom: 3rem;
     }
     
     .profile-section h3,
+    .search-section h3,
     .controls-section h3 {
       color: #333;
       margin-bottom: 1rem;
@@ -83,6 +109,26 @@ import { UserProfileComponent } from '../user/user-profile.component';
     .controls-section > p {
       color: #666;
       margin-bottom: 1rem;
+    }
+
+    .search-section details {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      background: white;
+    }
+
+    .search-section summary {
+      cursor: pointer;
+      font-weight: bold;
+      color: #1db954;
+      margin-bottom: 1rem;
+    }
+
+    .search-section details[open] summary {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
     }
     
     .instructions {
@@ -104,6 +150,10 @@ import { UserProfileComponent } from '../user/user-profile.component';
     
     .instructions li {
       margin-bottom: 0.5rem;
+    }
+    
+    .instructions strong {
+      color: #1db954;
     }
     
     .unauthenticated-content {
