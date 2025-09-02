@@ -2,7 +2,7 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, EMPTY } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { SpotifyAuthService } from '../auth/spotify-auth.service';
+import { SpotifyAuthService } from './spotify-auth.service';
 
 export interface SpotifyUser {
   id: string;

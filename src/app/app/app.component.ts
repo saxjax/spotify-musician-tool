@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { SpotifyAuthService } from '../auth/spotify-auth.service';
+import { SpotifyAuthService } from '../services/spotify-auth.service';
 
 @Component({
   selector: 'app-root',

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SpotifyAuthService } from '../spotify-auth.service';
-import { SpotifyPlayerService } from '../../player/spotify-player.service';
-import { SpotifyUserService } from '../../user/spotify-user.service';
+import { SpotifyAuthService } from '../../../services/spotify-auth.service';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
 
 @Component({
   selector: 'app-auth-callback',
@@ -37,10 +37,10 @@ export class AuthCallbackComponent implements OnInit {
 
           // Fetch user profile
           this.userService.fetchUserProfile().subscribe({
-            next: (profile) => {
+            next: (profile: any) => {
               console.log('👤 User profile loaded:', profile.display_name);
             },
-            error: (error) => {
+            error: (error: any) => {
               console.log('❌ Failed to load user profile:', error);
             }
           });

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SpotifyUserService } from '../spotify-user.service';
-import { SpotifyAuthService } from '../../auth/spotify-auth.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
+import { SpotifyAuthService } from '../../../services/spotify-auth.service';
 
 @Component({
   selector: 'app-user-profile',

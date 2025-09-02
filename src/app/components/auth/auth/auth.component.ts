@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { SpotifyAuthService } from '../spotify-auth.service';
+import { SpotifyAuthService } from '../../../services/spotify-auth.service';
 
 @Component({
   selector: 'app-auth',

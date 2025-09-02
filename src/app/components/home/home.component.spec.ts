@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { HomeComponent } from './home.component';
-import { SpotifyAuthService } from '../../auth/spotify-auth.service';
-import { SpotifyPlayerService } from '../../player/spotify-player.service';
-import { SpotifyUserService } from '../../user/spotify-user.service';
+import { SpotifyAuthService } from '../../services/spotify-auth.service';
+import { SpotifyUserService } from '../../services/spotify-user.service';
+import { SpotifyPlayerService } from '../../services/spotify-player.service';
 
 describe('HomeComponent', () => {
   beforeEach(async () => {

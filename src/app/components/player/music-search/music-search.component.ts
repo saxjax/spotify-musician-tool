@@ -1,8 +1,8 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SpotifyPlayerService, SpotifyTrack } from '../spotify-player.service';
-import { SpotifyUserService } from '../../user/spotify-user.service';
+import { SpotifyPlayerService, SpotifyTrack } from '../../../services/spotify-player.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
 
 @Component({
   selector: 'app-music-search',
@@ -40,12 +40,12 @@ export class MusicSearchComponent {
     this.searchError.set(null);
 
     this.spotifyPlayer.searchTracks(this.searchQuery.trim(), 20).subscribe({
-      next: (result) => {
+      next: (result: any) => {
         this.searchResults.set(result.tracks.items);
         this.isSearching.set(false);
         console.log(`Found ${result.tracks.items.length} tracks for "${this.searchQuery}"`);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Search error:', error);
         this.searchError.set('Failed to search tracks. Please try again.');
         this.isSearching.set(false);
@@ -72,7 +72,7 @@ export class MusicSearchComponent {
         this.isLoading.set(false);
         this.selectedTrack.set(null);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Playback error:', error);
         this.searchError.set(`Failed to play "${track.name}". Make sure Spotify is open on a device.`);
         this.isLoading.set(false);
@@ -83,18 +83,18 @@ export class MusicSearchComponent {
 
   refreshDevices(): void {
     this.spotifyPlayer.getAvailableDevices().subscribe({
-      next: (result) => {
+      next: (result: any) => {
         this.availableDevices.set(result.devices);
         console.log(`Found ${result.devices.length} available devices`);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error getting devices:', error);
       }
     });
   }
 
   getArtistNames(track: SpotifyTrack): string {
-    return track.artists.map(artist => artist.name).join(', ');
+    return track.artists.map((artist: any) => artist.name).join(', ');
   }
 
   formatDuration(durationMs: number): string {

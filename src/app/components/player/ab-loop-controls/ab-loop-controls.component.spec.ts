@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AbLoopControlsComponent } from './ab-loop-controls.component';
-import { PlayerStore } from '../player.store';
-import { SpotifyPlayerService } from '../spotify-player.service';
+import { PlayerStore } from '../../../services/player.store';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
 
 describe('AbLoopControlsComponent', () => {
   let component: AbLoopControlsComponent;

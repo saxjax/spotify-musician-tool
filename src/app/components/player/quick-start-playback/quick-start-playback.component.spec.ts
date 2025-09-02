@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { QuickStartPlaybackComponent } from './quick-start-playback.component';
-import { SpotifyPlayerService } from '../spotify-player.service';
-import { SpotifyUserService } from '../../user/spotify-user.service';
-import { PlayerStore } from '../player.store';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
+import { PlayerStore } from '../../../services/player.store';
 
 describe('QuickStartPlaybackComponent', () => {
   beforeEach(async () => {

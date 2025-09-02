@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MusicSearchComponent } from './music-search.component';
-import { SpotifyPlayerService } from '../spotify-player.service';
-import { SpotifyUserService } from '../../user/spotify-user.service';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
 
 describe('MusicSearchComponent', () => {
   beforeEach(async () => {

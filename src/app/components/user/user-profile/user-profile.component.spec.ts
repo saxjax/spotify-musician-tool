@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { UserProfileComponent } from './user-profile.component';
-import { SpotifyUserService } from '../spotify-user.service';
-import { SpotifyAuthService } from '../../auth/spotify-auth.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
+import { SpotifyAuthService } from '../../../services/spotify-auth.service';
 
 describe('UserProfileComponent', () => {
   beforeEach(async () => {

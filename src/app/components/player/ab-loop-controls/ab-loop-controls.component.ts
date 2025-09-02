@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy, ChangeDetectionStrategy, computed } from '@angular/core';
-import { PlayerStore } from '../player.store';
-import { SpotifyPlayerService } from '../spotify-player.service';
+import { PlayerStore } from '../../../services/player.store';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
 
 @Component({
   selector: 'app-ab-loop-controls',
@@ -94,7 +94,7 @@ export class AbLoopControlsComponent implements OnInit, OnDestroy {
     console.log('🎵 Starting playback of current song');
     this.spotifyPlayer.resumePlayback().subscribe({
       next: () => console.log('✅ Playback started successfully'),
-      error: (error) => {
+      error: (error: any) => {
         console.error('❌ Failed to start playback:', error);
         alert('Failed to start playback. Make sure Spotify is open and a song is selected.');
       }

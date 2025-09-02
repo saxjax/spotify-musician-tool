@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { AuthComponent } from './auth.component';
-import { SpotifyAuthService } from '../spotify-auth.service';
+import { SpotifyAuthService } from '../../../services/spotify-auth.service';
 
 describe('AuthComponent', () => {
   beforeEach(async () => {

@@ -1,8 +1,8 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SpotifyPlayerService } from '../spotify-player.service';
-import { SpotifyUserService } from '../../user/spotify-user.service';
-import { PlayerStore } from '../player.store';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
+import { PlayerStore } from '../../../services/player.store';
 
 @Component({
   selector: 'app-quick-start-playback',
@@ -37,7 +37,7 @@ export class QuickStartPlaybackComponent {
         console.log('✅ Playback started successfully');
         this.isLoading.set(false);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('❌ Failed to start playback:', error);
         this.isLoading.set(false);
 
@@ -57,7 +57,7 @@ export class QuickStartPlaybackComponent {
       next: () => {
         console.log('✅ Playback paused');
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('❌ Failed to pause:', error);
         this.error.set('Failed to pause playback');
       }

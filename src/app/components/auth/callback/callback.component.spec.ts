@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthCallbackComponent } from './login-error.component';
-import { SpotifyAuthService } from '../spotify-auth.service';
-import { SpotifyPlayerService } from '../../player/spotify-player.service';
-import { SpotifyUserService } from '../../user/spotify-user.service';
+import { AuthCallbackComponent } from './callback.component';
+import { SpotifyAuthService } from '../../../services/spotify-auth.service';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
+import { SpotifyUserService } from '../../../services/spotify-user.service';
 
-describe('AuthCallbackComponent (login-error)', () => {
+describe('AuthCallbackComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AuthCallbackComponent],
