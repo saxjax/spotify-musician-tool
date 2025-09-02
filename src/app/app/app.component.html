@@ -1,0 +1,14 @@
+<header class="app-header">
+  <h1 class="title">Spotify Musician Tool</h1>
+  @if (auth.isAuthenticated()) {
+    <div class="auth-status">
+      <span>✅ Connected to Spotify</span>
+      <button type="button" (click)="logout()" class="logout-btn">Logout</button>
+    </div>
+  } @else {
+    <a routerLink="/auth" class="connect-btn" aria-label="Connect Spotify">Connect Spotify</a>
+  }
+</header>
+<main>
+  <router-outlet></router-outlet>
+</main>

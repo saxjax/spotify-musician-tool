@@ -1,0 +1,104 @@
+<div class="user-profile">
+  @if (userService.isLoading()) {
+    <div class="loading">
+      <div class="spinner"></div>
+      <span>Loading profile...</span>
+    </div>
+  } @else if (userService.error()) {
+    <div class="error">
+      <span class="error-icon">⚠️</span>
+      <span>{{ userService.error() }}</span>
+      <button (click)="retry()" class="retry-btn">Retry</button>
+    </div>
+  } @else if (userService.userProfile(); as profile) {
+    <div class="profile-content">
+      <div class="profile-header">
+        @if (userService.avatarUrl(); as avatarUrl) {
+          <img [src]="avatarUrl" [alt]="profile.display_name + ' avatar'" class="avatar">
+        } @else {
+          <div class="avatar-placeholder">
+            {{ getInitials(profile.display_name) }}
+          </div>
+        }
+
+        <div class="profile-info">
+          <h3 class="display-name">{{ profile.display_name }}</h3>
+          <div class="profile-details">
+            <span class="account-type" [class.premium]="userService.isPremium()">
+              {{ userService.isPremium() ? '👑 Premium' : '🆓 Free' }}
+            </span>
+            @if (userService.followerCount() > 0) {
+              <span class="followers">{{ userService.followerCount() }} followers</span>
+            }
+            <span class="country">{{ profile.country }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-item">
+          <span class="stat-label">User ID</span>
+          <span class="stat-value">{{ profile.id }}</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">Email</span>
+          <span class="stat-value">{{ profile.email }}</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">Account Type</span>
+          <span class="stat-value">{{ profile.product }}</span>
+        </div>
+
+        <div class="stat-item">
+          <span class="stat-label">Spotify URI</span>
+          <a [href]="profile.external_urls.spotify" target="_blank" class="stat-link">
+            {{ profile.uri }}
+          </a>
+        </div>
+      </div>
+
+      @if (!userService.isPremium()) {
+        <div class="premium-notice">
+          <h4>🎵 Upgrade to Premium</h4>
+          <p>
+            To use playback control features like AB looping, you need a Spotify Premium account.
+            Free accounts can only view playback information.
+          </p>
+          <a href="https://www.spotify.com/premium/" target="_blank" class="upgrade-btn">
+            Upgrade to Premium
+          </a>
+        </div>
+      } @else {
+        <div class="premium-features">
+          <h4>🎉 Premium Features Available</h4>
+          <p>
+            Your Premium account gives you access to all playback control features:
+          </p>
+          <ul>
+            <li>✅ AB Loop control</li>
+            <li>✅ Seek to any position</li>
+            <li>✅ Play/pause control</li>
+            <li>✅ Skip tracks</li>
+            <li>✅ Volume control</li>
+          </ul>
+        </div>
+      }
+
+      <div class="actions">
+        <button (click)="refreshProfile()" class="refresh-btn">
+          🔄 Refresh Profile
+        </button>
+        <button (click)="logout()" class="logout-btn">
+          🚪 Logout
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="no-profile">
+      <span>No profile data available</span>
+      <button (click)="loadProfile()" class="load-btn">Load Profile</button>
+    </div>
+  }
+</div>

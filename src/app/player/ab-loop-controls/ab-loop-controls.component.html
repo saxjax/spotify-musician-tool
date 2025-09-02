@@ -1,0 +1,132 @@
+<div class="ab-loop-controls">
+  <!-- Current Track Info -->
+  @if (playerStore.currentTrack(); as track) {
+    <div class="track-info">
+      <div class="track-name">{{ track.name }}</div>
+      <div class="track-artist">{{ track.artist }}</div>
+      <div class="track-time">{{ currentTime() }} / {{ totalTime() }}</div>
+    </div>
+  }
+
+  <!-- Playback Controls -->
+  <div class="playback-controls">
+    <button (click)="seekRelative(-5000)" class="seek-btn" title="Skip back 5 seconds">
+      ⏪ 5s
+    </button>
+
+    <button
+      (click)="togglePlayback()"
+      class="play-pause-btn"
+      [class.playing]="playerStore.isPlaying()">
+      {{ playerStore.isPlaying() ? '⏸️' : '▶️' }}
+    </button>
+
+    <button
+      (click)="startPlayback()"
+      class="start-playing-btn"
+      [disabled]="playerStore.isPlaying()"
+      title="Start playing the currently selected song">
+      🎵 Start Playing
+    </button>
+
+    <button (click)="seekRelative(5000)" class="seek-btn" title="Skip forward 5 seconds">
+      5s ⏩
+    </button>
+  </div>
+
+  <!-- AB Loop Controls -->
+  <div class="loop-controls">
+    <div class="loop-points">
+      <div class="loop-point">
+        <span class="label">Point A:</span>
+        <span class="time">{{ loopATime() }}</span>
+
+        <button (click)="adjustLoopPoint('A', -500)" class="micro-seek-btn" title="Adjust point A back 0.5 seconds">
+          ⏪ 0.5s
+        </button>
+
+        <button (click)="setLoopPoint('A')" class="set-point-btn">
+          Set A
+        </button>
+
+        <button (click)="adjustLoopPoint('A', 500)" class="micro-seek-btn" title="Adjust point A forward 0.5 seconds">
+          0.5s ⏩
+        </button>
+
+        @if (playerStore.loopA() !== null) {
+          <button (click)="jumpToLoopPoint('A')" class="jump-btn" title="Jump to point A">
+            Jump
+          </button>
+        }
+      </div>
+
+      <div class="loop-point">
+        <span class="label">Point B:</span>
+        <span class="time">{{ loopBTime() }}</span>
+
+        <button (click)="adjustLoopPoint('B', -500)" class="micro-seek-btn" title="Adjust point B back 0.5 seconds">
+          ⏪ 0.5s
+        </button>
+
+        <button (click)="setLoopPoint('B')" class="set-point-btn">
+          Set B
+        </button>
+
+        <button (click)="adjustLoopPoint('B', 500)" class="micro-seek-btn" title="Adjust point B forward 0.5 seconds">
+          0.5s ⏩
+        </button>
+
+        @if (playerStore.loopB() !== null) {
+          <button (click)="jumpToLoopPoint('B')" class="jump-btn" title="Jump to point B">
+            Jump
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="loop-actions">
+      <button
+        (click)="toggleLoop()"
+        class="loop-toggle-btn"
+        [class.active]="playerStore.isLooping()"
+        [disabled]="!canLoop()">
+        {{ playerStore.isLooping() ? 'Stop Loop' : 'Start Loop' }}
+      </button>
+
+      <button (click)="clearLoopPoints()" class="clear-btn">
+        Clear Points
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Bar with Loop Points -->
+  <div class="progress-container">
+    <div class="progress-bar" (click)="onProgressClick($event)">
+      <div class="progress-fill" [style.width.%]="progressPercentage()"></div>
+
+      @if (playerStore.loopA() !== null) {
+        <div class="loop-marker loop-a" [style.left.%]="loopAPercentage()" title="Loop Point A">A</div>
+      }
+
+      @if (playerStore.loopB() !== null) {
+        <div class="loop-marker loop-b" [style.left.%]="loopBPercentage()" title="Loop Point B">B</div>
+      }
+
+      @if (canLoop()) {
+        <div
+          class="loop-range"
+          [class.active]="playerStore.isLooping()"
+          [style.left.%]="loopAPercentage()"
+          [style.width.%]="loopRangeWidth()">
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="status">
+    <span class="loop-status" [class]="loopStatusClass()">
+      {{ loopStatusText() }}
+    </span>
+  </div>
+</div>

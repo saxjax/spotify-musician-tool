@@ -1,20 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SpotifyAuthService } from './spotify-auth.service';
-import { SpotifyPlayerService } from '../player/spotify-player.service';
-import { SpotifyUserService } from '../user/spotify-user.service';
+import { SpotifyAuthService } from '../spotify-auth.service';
+import { SpotifyPlayerService } from '../../player/spotify-player.service';
+import { SpotifyUserService } from '../../user/spotify-user.service';
 
 @Component({
   selector: 'app-auth-callback',
-  template: `
-    <section class="auth-callback">
-      <h2>Finishing sign-in, not quite there yet…</h2>
-      @if (error) {
-        <p>Error: {{ error }}</p>
-      }
-    </section>
-  `,
-  styles: [`.auth-callback{padding:1rem}`],
+  standalone: true,
+  templateUrl: './login-error.component.html',
+  styleUrl: './login-error.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthCallbackComponent implements OnInit {

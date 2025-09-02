@@ -1,0 +1,23 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+.title {
+  margin: 0;
+  font-size: 2.125rem;
+}
+.connect-btn, .logout-btn {
+  padding: .5rem .75rem;
+  border-radius: .5rem;
+  border: 1px solid currentColor;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+}
+.auth-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

@@ -1,0 +1,48 @@
+<section class="home">
+  @if (auth.isAuthenticated()) {
+    <div class="authenticated-content">
+      <h2>🎵 Spotify Musician Tool</h2>
+      <p>Connected to Spotify! Control playback and practice with AB looping.</p>
+
+      <div class="quick-start-section">
+        <app-quick-start-playback></app-quick-start-playback>
+      </div>
+
+      <div class="controls-section">
+        <h3>AB Loop Controls</h3>
+        <p>Once music is playing, use these controls to practice specific sections.</p>
+        <app-ab-loop-controls></app-ab-loop-controls>
+      </div>
+
+      <div class="profile-section">
+        <h3>Your Spotify Profile</h3>
+        <app-user-profile></app-user-profile>
+      </div>
+
+      <div class="search-section">
+        <h3>Search & Play Different Songs</h3>
+        <details>
+          <summary>Click to expand music search</summary>
+          <app-music-search></app-music-search>
+        </details>
+      </div>
+
+      <div class="instructions">
+        <h3>How to use this tool:</h3>
+        <ol>
+          <li><strong>Quick Start:</strong> Select any song in Spotify, then click "Start Playing" above</li>
+          <li><strong>Set Loop Points:</strong> While playing, click "Set A" and "Set B" to mark the section you want to practice</li>
+          <li><strong>Loop:</strong> Click "Start Loop" to continuously repeat the selected section</li>
+          <li><strong>Practice:</strong> Use the controls to jump to loop points, skip around, or adjust playback</li>
+        </ol>
+        <p><strong>Note:</strong> You need Spotify Premium for playback control to work.</p>
+      </div>
+    </div>
+  } @else {
+    <div class="unauthenticated-content">
+      <h2>Welcome to Spotify Musician Tool</h2>
+      <p>Connect your Spotify account to start practicing with AB looping!</p>
+      <p>Use the "Connect Spotify" button above to get started.</p>
+    </div>
+  }
+</section>

@@ -1,0 +1,116 @@
+<div class="music-search">
+  <h3>🎵 Search & Play Music</h3>
+
+  @if (!userService.isPremium()) {
+    <div class="premium-warning">
+      <span class="warning-icon">⚠️</span>
+      <span>Spotify Premium required to start playback from this app</span>
+    </div>
+  }
+
+  <div class="search-section">
+    <div class="search-input-group">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="searchTracks()"
+        placeholder="Search for songs, artists, or albums..."
+        class="search-input"
+        [disabled]="isSearching()">
+      <button
+        (click)="searchTracks()"
+        [disabled]="!searchQuery || isSearching()"
+        class="search-btn">
+        @if (isSearching()) {
+          <span class="spinner"></span>
+        } @else {
+          🔍
+        }
+      </button>
+    </div>
+  </div>
+
+  @if (availableDevices().length > 0) {
+    <div class="device-section">
+      <label for="device-select">Play on device:</label>
+      <select
+        id="device-select"
+        [(ngModel)]="selectedDeviceId"
+        class="device-select">
+        <option value="">Current active device</option>
+        @for (device of availableDevices(); track device.id) {
+          <option [value]="device.id">
+            {{ device.name }} ({{ device.type }})
+            @if (device.is_active) {
+              - Active
+            }
+          </option>
+        }
+      </select>
+      <button (click)="refreshDevices()" class="refresh-devices-btn">🔄</button>
+    </div>
+  }
+
+  @if (searchResults().length > 0) {
+    <div class="results-section">
+      <h4>Search Results ({{ searchResults().length }})</h4>
+      <div class="track-list">
+        @for (track of searchResults(); track track.id) {
+          <div class="track-item" [class.playing]="isTrackPlaying(track)">
+            <div class="track-info">
+              @if (track.album.images[0]; as image) {
+                <img [src]="image.url" [alt]="track.name" class="track-image">
+              } @else {
+                <div class="track-image-placeholder">🎵</div>
+              }
+
+              <div class="track-details">
+                <div class="track-name">{{ track.name }}</div>
+                <div class="track-artist">{{ getArtistNames(track) }}</div>
+                <div class="track-album">{{ track.album.name }}</div>
+                <div class="track-duration">{{ formatDuration(track.duration_ms) }}</div>
+              </div>
+            </div>
+
+            <div class="track-actions">
+              <button
+                (click)="playTrack(track)"
+                [disabled]="!userService.isPremium() || isLoading()"
+                class="play-btn"
+                [class.loading]="isLoading() && selectedTrack()?.id === track.id">
+                @if (isLoading() && selectedTrack()?.id === track.id) {
+                  <span class="spinner"></span>
+                } @else if (isTrackPlaying(track)) {
+                  ⏸️
+                } @else {
+                  ▶️
+                }
+              </button>
+
+              <a [href]="track.external_urls.spotify"
+                 target="_blank"
+                 class="spotify-link"
+                 title="Open in Spotify">
+                🔗
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (searchError()) {
+    <div class="error-message">
+      <span class="error-icon">❌</span>
+      <span>{{ searchError() }}</span>
+      <button (click)="clearError()" class="clear-error-btn">✕</button>
+    </div>
+  }
+
+  @if (searchQuery && searchResults().length === 0 && !isSearching() && !searchError()) {
+    <div class="no-results">
+      <span>No tracks found for "{{ searchQuery }}"</span>
+    </div>
+  }
+</div>

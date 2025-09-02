@@ -1,0 +1,268 @@
+/* Container */
+.ab-loop-controls {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+  background: white;
+}
+
+/* Track Info */
+.track-info {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.track-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.track-artist {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.track-time {
+  font-family: monospace;
+  color: #888;
+}
+
+/* Button Base Styles */
+button {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* Playback Controls */
+.playback-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.play-pause-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #1db954;
+  color: white;
+  font-size: 18px;
+
+  &:hover {
+    background: #1ed760;
+  }
+}
+
+.start-playing-btn {
+  padding: 10px 15px;
+  border: 1px solid #1db954;
+  background: #1db954;
+  color: white;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: #1ed760;
+  }
+
+  &:disabled {
+    background: #6c757d;
+    border-color: #6c757d;
+  }
+}
+
+.seek-btn {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background: white;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+/* Loop Controls */
+.loop-controls {
+  margin-bottom: 25px;
+}
+
+.loop-points {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.loop-point {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  font-weight: bold;
+  min-width: 60px;
+}
+
+.time {
+  font-family: monospace;
+  min-width: 80px;
+  color: #666;
+}
+
+.micro-seek-btn {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background: white;
+  font-size: 12px;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.set-point-btn {
+  padding: 5px 15px;
+  border: 1px solid #007bff;
+  background: #007bff;
+  color: white;
+
+  &:hover {
+    background: #0056b3;
+  }
+}
+
+.jump-btn {
+  padding: 5px 10px;
+  border: 1px solid #28a745;
+  background: #28a745;
+  color: white;
+  font-size: 12px;
+
+  &:hover {
+    background: #1e7e34;
+  }
+}
+
+.loop-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.loop-toggle-btn {
+  padding: 10px 20px;
+  border: 2px solid #dc3545;
+  background: white;
+  color: #dc3545;
+  font-weight: bold;
+
+  &.active {
+    background: #dc3545;
+    color: white;
+  }
+}
+
+.clear-btn {
+  padding: 10px 20px;
+  border: 1px solid #6c757d;
+  background: white;
+  color: #6c757d;
+
+  &:hover {
+    background: #6c757d;
+    color: white;
+  }
+}
+
+/* Progress Bar */
+.progress-container {
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  position: relative;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #1db954;
+  border-radius: 5px;
+  transition: width 0.2s;
+}
+
+.loop-marker {
+  position: absolute;
+  top: -15px;
+  transform: translateX(-50%);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: bold;
+  pointer-events: none;
+
+  &.loop-a {
+    background: #28a745;
+  }
+
+  &.loop-b {
+    background: #dc3545;
+  }
+}
+
+.loop-range {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: rgba(220, 53, 69, 0.2);
+  border-radius: 5px;
+  pointer-events: none;
+
+  &.active {
+    background: rgba(220, 53, 69, 0.4);
+  }
+}
+
+/* Status */
+.status {
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.loop-status {
+  &.active {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  &.ready {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  &.inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+}

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { SpotifyAuthService } from '../auth/spotify-auth.service';
-import { SpotifyPlayerService } from '../player/spotify-player.service';
-import { SpotifyUserService } from '../user/spotify-user.service';
-import { AbLoopControlsComponent } from '../player/ab-loop-controls.component';
-import { UserProfileComponent } from '../user/user-profile.component';
-import { MusicSearchComponent } from '../player/music-search.component';
-import { QuickStartPlaybackComponent } from '../player/quick-start-playback.component';
+import { SpotifyAuthService } from '../../auth/spotify-auth.service';
+import { SpotifyPlayerService } from '../../player/spotify-player.service';
+import { SpotifyUserService } from '../../user/spotify-user.service';
+import { AbLoopControlsComponent } from '../../player/ab-loop-controls/ab-loop-controls.component';
+import { UserProfileComponent } from '../../user/user-profile/user-profile.component';
+import { MusicSearchComponent } from '../../player/music-search/music-search.component';
+import { QuickStartPlaybackComponent } from '../../player/quick-start-playback/quick-start-playback.component';
 
 @Component({
   selector: 'app-home',

@@ -1,0 +1,100 @@
+.home {
+  padding: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.authenticated-content h2 {
+  color: #1db954;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.authenticated-content > p {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.quick-start-section {
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid #1db954;
+}
+
+.profile-section,
+.search-section,
+.controls-section {
+  margin-bottom: 3rem;
+}
+
+.profile-section h3,
+.search-section h3,
+.controls-section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #1db954;
+}
+
+.controls-section > p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.search-section details {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  background: white;
+}
+
+.search-section summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: #1db954;
+  margin-bottom: 1rem;
+}
+
+.search-section details[open] summary {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.instructions {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #1db954;
+}
+
+.instructions h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.instructions ol {
+  margin: 1rem 0;
+}
+
+.instructions li {
+  margin-bottom: 0.5rem;
+}
+
+.instructions strong {
+  color: #1db954;
+}
+
+.unauthenticated-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.unauthenticated-content h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
