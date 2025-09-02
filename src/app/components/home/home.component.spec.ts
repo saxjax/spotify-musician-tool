@@ -1,25 +1,65 @@
-import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { signal } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { SpotifyAuthService } from '../../services/spotify-auth.service';
 import { SpotifyUserService } from '../../services/spotify-user.service';
 import { SpotifyPlayerService } from '../../services/spotify-player.service';
+import { setupZonelessTest } from '../../../test-helpers/zoneless-test-setup';
 
 describe('HomeComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HomeComponent],
-      providers: [
-        provideZonelessChangeDetection(),
-        { provide: SpotifyAuthService, useValue: jasmine.createSpyObj('SpotifyAuthService', ['accessToken', 'isAuthenticated'], { isAuthenticated: () => false }) },
-        { provide: SpotifyPlayerService, useValue: jasmine.createSpyObj('SpotifyPlayerService', ['setAccessToken']) },
-        { provide: SpotifyUserService, useValue: jasmine.createSpyObj('SpotifyUserService', ['fetchUserProfile']) }
-      ]
-    }).compileComponents();
+  let mockAuthService: Partial<SpotifyAuthService>;
+  let mockPlayerService: Partial<SpotifyPlayerService>;
+  let mockUserService: Partial<SpotifyUserService>;
+
+  beforeEach(() => {
+    mockAuthService = {
+      isAuthenticated: signal(false),
+      accessToken: signal(null),
+      startLogin: jest.fn(),
+      handleCallbackFromUrl: jest.fn(),
+      refresh: jest.fn(),
+      logout: jest.fn()
+    };
+
+    mockPlayerService = {
+      setAccessToken: jest.fn()
+    };
+
+    mockUserService = {
+      fetchUserProfile: jest.fn()
+    };
   });
 
-  it('should create', () => {
-    const fixture = TestBed.createComponent(HomeComponent);
-    expect(fixture.componentInstance).toBeTruthy();
+  it('should create', async () => {
+    const { fixture, component } = await setupZonelessTest(HomeComponent, [
+      { provide: SpotifyAuthService, useValue: mockAuthService },
+      { provide: SpotifyPlayerService, useValue: mockPlayerService },
+      { provide: SpotifyUserService, useValue: mockUserService }
+    ]);
+
+    expect(component).toBeTruthy();
+  });
+
+  it('should handle unauthenticated state', async () => {
+    const { fixture, component } = await setupZonelessTest(HomeComponent, [
+      { provide: SpotifyAuthService, useValue: mockAuthService },
+      { provide: SpotifyPlayerService, useValue: mockPlayerService },
+      { provide: SpotifyUserService, useValue: mockUserService }
+    ]);
+
+    expect(mockAuthService.isAuthenticated?.()).toBe(false);
+  });
+
+  it('should handle authenticated state', async () => {
+    mockAuthService.isAuthenticated = signal(true);
+    mockAuthService.accessToken = signal('mock-token');
+
+    const { fixture, component } = await setupZonelessTest(HomeComponent, [
+      { provide: SpotifyAuthService, useValue: mockAuthService },
+      { provide: SpotifyPlayerService, useValue: mockPlayerService },
+      { provide: SpotifyUserService, useValue: mockUserService }
+    ]);
+
+    expect(mockAuthService.isAuthenticated()).toBe(true);
+    expect(mockAuthService.accessToken()).toBe('mock-token');
   });
 });

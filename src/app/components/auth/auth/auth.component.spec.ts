@@ -1,21 +1,21 @@
-import { TestBed } from '@angular/core/testing';
-import { provideZonelessChangeDetection } from '@angular/core';
 import { AuthComponent } from './auth.component';
 import { SpotifyAuthService } from '../../../services/spotify-auth.service';
+import { setupZonelessTest } from '../../../../test-helpers/zoneless-test-setup';
 
 describe('AuthComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AuthComponent],
-      providers: [
-        provideZonelessChangeDetection(),
-        { provide: SpotifyAuthService, useValue: jasmine.createSpyObj('SpotifyAuthService', ['startLogin']) }
-      ]
-    }).compileComponents();
+  let mockAuthService: Partial<SpotifyAuthService>;
+
+  beforeEach(() => {
+    mockAuthService = {
+      startLogin: jest.fn()
+    };
   });
 
-  it('should create', () => {
-    const fixture = TestBed.createComponent(AuthComponent);
-    expect(fixture.componentInstance).toBeTruthy();
+  it('should create', async () => {
+    const { fixture, component } = await setupZonelessTest(AuthComponent, [
+      { provide: SpotifyAuthService, useValue: mockAuthService }
+    ]);
+
+    expect(component).toBeTruthy();
   });
 });
