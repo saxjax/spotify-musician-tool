@@ -11,7 +11,7 @@ import { SpotifyUserService } from '../user/spotify-user.service';
   template: `
     <div class="music-search">
       <h3>🎵 Search & Play Music</h3>
-      
+
       @if (!userService.isPremium()) {
         <div class="premium-warning">
           <span class="warning-icon">⚠️</span>
@@ -22,14 +22,14 @@ import { SpotifyUserService } from '../user/spotify-user.service';
       <!-- Search Section -->
       <div class="search-section">
         <div class="search-input-group">
-          <input 
-            type="text" 
+          <input
+            type="text"
             [(ngModel)]="searchQuery"
             (keyup.enter)="searchTracks()"
             placeholder="Search for songs, artists, or albums..."
             class="search-input"
             [disabled]="isSearching()">
-          <button 
+          <button
             (click)="searchTracks()"
             [disabled]="!searchQuery || isSearching()"
             class="search-btn">
@@ -46,7 +46,7 @@ import { SpotifyUserService } from '../user/spotify-user.service';
       @if (availableDevices().length > 0) {
         <div class="device-section">
           <label for="device-select">Play on device:</label>
-          <select 
+          <select
             id="device-select"
             [(ngModel)]="selectedDeviceId"
             class="device-select">
@@ -77,7 +77,7 @@ import { SpotifyUserService } from '../user/spotify-user.service';
                   } @else {
                     <div class="track-image-placeholder">🎵</div>
                   }
-                  
+
                   <div class="track-details">
                     <div class="track-name">{{ track.name }}</div>
                     <div class="track-artist">{{ getArtistNames(track) }}</div>
@@ -85,9 +85,9 @@ import { SpotifyUserService } from '../user/spotify-user.service';
                     <div class="track-duration">{{ formatDuration(track.duration_ms) }}</div>
                   </div>
                 </div>
-                
+
                 <div class="track-actions">
-                  <button 
+                  <button
                     (click)="playTrack(track)"
                     [disabled]="!userService.isPremium() || isLoading()"
                     class="play-btn"
@@ -100,9 +100,9 @@ import { SpotifyUserService } from '../user/spotify-user.service';
                       ▶️
                     }
                   </button>
-                  
-                  <a [href]="track.external_urls.spotify" 
-                     target="_blank" 
+
+                  <a [href]="track.external_urls.spotify"
+                     target="_blank"
                      class="spotify-link"
                      title="Open in Spotify">
                     🔗
@@ -410,7 +410,7 @@ export class MusicSearchComponent {
   // Component state
   searchQuery = '';
   selectedDeviceId = '';
-  
+
   // Signals
   searchResults = signal<SpotifyTrack[]>([]);
   availableDevices = signal<Array<{ id: string; name: string; type: string; is_active: boolean; }>>([]);

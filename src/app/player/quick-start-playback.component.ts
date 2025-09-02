@@ -11,7 +11,7 @@ import { PlayerStore } from './player.store';
   template: `
     <div class="quick-start">
       <h3>🎵 Quick Start Playback</h3>
-      
+
       @if (!userService.isPremium()) {
         <div class="premium-warning">
           <span class="warning-icon">⚠️</span>
@@ -24,7 +24,7 @@ import { PlayerStore } from './player.store';
           <div class="currently-playing">
             <span class="playing-icon">🎵</span>
             <span>Music is currently playing</span>
-            <button 
+            <button
               (click)="pausePlayback()"
               class="pause-btn">
               ⏸️ Pause
@@ -35,8 +35,8 @@ import { PlayerStore } from './player.store';
             <p class="instruction">
               Select a song in Spotify, then click below to start playing:
             </p>
-            
-            <button 
+
+            <button
               (click)="startPlayback()"
               [disabled]="!userService.isPremium() || isLoading()"
               class="start-btn"
@@ -290,7 +290,7 @@ export class QuickStartPlaybackComponent {
       error: (error) => {
         console.error('❌ Failed to start playback:', error);
         this.isLoading.set(false);
-        
+
         if (error.status === 404) {
           this.error.set('No active device found. Please open Spotify on a device first.');
         } else if (error.status === 403) {

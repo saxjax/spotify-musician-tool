@@ -39,7 +39,7 @@ export class SpotifyUserService {
   private auth = inject(SpotifyAuthService);
 
   private readonly SPOTIFY_API_BASE = 'https://api.spotify.com/v1';
-  
+
   // User profile state
   private _userProfile = signal<SpotifyUser | null>(null);
   private _isLoading = signal(false);
@@ -133,7 +133,7 @@ export class SpotifyUserService {
 
     const premium = profile.product === 'premium' ? '👑 Premium' : '🆓 Free';
     const followers = profile.followers.total > 0 ? `${profile.followers.total} followers` : 'No followers';
-    
+
     return `${profile.display_name} (${premium}) • ${followers} • ${profile.country}`;
   }
 }
