@@ -30,7 +30,7 @@ import { SpotifyAuthService } from '../auth/spotify-auth.service';
                 {{ getInitials(profile.display_name) }}
               </div>
             }
-            
+
             <div class="profile-info">
               <h3 class="display-name">{{ profile.display_name }}</h3>
               <div class="profile-details">
@@ -50,17 +50,17 @@ import { SpotifyAuthService } from '../auth/spotify-auth.service';
               <span class="stat-label">User ID</span>
               <span class="stat-value">{{ profile.id }}</span>
             </div>
-            
+
             <div class="stat-item">
               <span class="stat-label">Email</span>
               <span class="stat-value">{{ profile.email }}</span>
             </div>
-            
+
             <div class="stat-item">
               <span class="stat-label">Account Type</span>
               <span class="stat-value">{{ profile.product }}</span>
             </div>
-            
+
             <div class="stat-item">
               <span class="stat-label">Spotify URI</span>
               <a [href]="profile.external_urls.spotify" target="_blank" class="stat-link">

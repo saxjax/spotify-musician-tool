@@ -34,13 +34,13 @@ export class AuthCallbackComponent implements OnInit {
 
       if (result.ok) {
         console.log('✅ Auth successful, setting up services');
-        
+
         // Set the access token in both services
         const token = this.auth.accessToken();
         if (token) {
           this.spotifyPlayer.setAccessToken(token);
           console.log('🎵 Access token set in SpotifyPlayerService');
-          
+
           // Fetch user profile
           this.userService.fetchUserProfile().subscribe({
             next: (profile) => {
@@ -51,7 +51,7 @@ export class AuthCallbackComponent implements OnInit {
             }
           });
         }
-        
+
         console.log('🏠 Navigating to home');
         this.router.navigateByUrl('/');
       } else {

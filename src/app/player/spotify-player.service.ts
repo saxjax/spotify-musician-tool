@@ -322,18 +322,19 @@ export class SpotifyPlayerService {
   /**
    * Set loop point A at current position
    */
-  setLoopPointA(): void {
+  setLoopPointA(adjustmentInMs: number = 0): void {
     const currentPosition = this.playerStore.positionMs();
     const loopB = this.playerStore.loopB();
+    const loopA = this.playerStore.loopA() && adjustmentInMs? this.playerStore.loopA()! + adjustmentInMs : currentPosition;
 
-    this.playerStore.setLoopPoints(currentPosition, loopB);
+    this.playerStore.setLoopPoints(loopA, loopB);
     console.log(`Loop point A set at ${currentPosition}ms`);
   }
 
   /**
    * Set loop point B at current position
    */
-  setLoopPointB(): void {
+  setLoopPointB(adjustmentInMs: number = 0): void {
     const currentPosition = this.playerStore.positionMs();
     const loopA = this.playerStore.loopA();
 

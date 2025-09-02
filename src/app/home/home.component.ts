@@ -16,23 +16,22 @@ import { QuickStartPlaybackComponent } from '../player/quick-start-playback.comp
         <div class="authenticated-content">
           <h2>🎵 Spotify Musician Tool</h2>
           <p>Connected to Spotify! Control playback and practice with AB looping.</p>
-          
+
           <!-- Quick Start Section - Most Prominent -->
           <div class="quick-start-section">
             <app-quick-start-playback></app-quick-start-playback>
           </div>
-          
-          <!-- User Profile Section -->
-          <div class="profile-section">
-            <h3>Your Spotify Profile</h3>
-            <app-user-profile></app-user-profile>
-          </div>
-          
-          <!-- AB Loop Controls Section -->
+                    <!-- AB Loop Controls Section -->
           <div class="controls-section">
             <h3>AB Loop Controls</h3>
             <p>Once music is playing, use these controls to practice specific sections.</p>
             <app-ab-loop-controls></app-ab-loop-controls>
+          </div>
+
+          <!-- User Profile Section -->
+          <div class="profile-section">
+            <h3>Your Spotify Profile</h3>
+            <app-user-profile></app-user-profile>
           </div>
 
           <!-- Music Search & Play Section -->
@@ -43,7 +42,7 @@ import { QuickStartPlaybackComponent } from '../player/quick-start-playback.comp
               <app-music-search></app-music-search>
             </details>
           </div>
-          
+
           <div class="instructions">
             <h3>How to use this tool:</h3>
             <ol>
@@ -70,19 +69,19 @@ import { QuickStartPlaybackComponent } from '../player/quick-start-playback.comp
       max-width: 1000px;
       margin: 0 auto;
     }
-    
+
     .authenticated-content h2 {
       color: #1db954;
       margin-bottom: 1rem;
       text-align: center;
     }
-    
+
     .authenticated-content > p {
       text-align: center;
       margin-bottom: 2rem;
       color: #666;
     }
-    
+
     .quick-start-section {
       margin-bottom: 3rem;
       background: linear-gradient(135deg, #f8f9fa, #e9ecef);
@@ -90,13 +89,13 @@ import { QuickStartPlaybackComponent } from '../player/quick-start-playback.comp
       border-radius: 12px;
       border: 2px solid #1db954;
     }
-    
+
     .profile-section,
     .search-section,
     .controls-section {
       margin-bottom: 3rem;
     }
-    
+
     .profile-section h3,
     .search-section h3,
     .controls-section h3 {
@@ -105,7 +104,7 @@ import { QuickStartPlaybackComponent } from '../player/quick-start-playback.comp
       padding-bottom: 0.5rem;
       border-bottom: 2px solid #1db954;
     }
-    
+
     .controls-section > p {
       color: #666;
       margin-bottom: 1rem;
@@ -130,7 +129,7 @@ import { QuickStartPlaybackComponent } from '../player/quick-start-playback.comp
       padding-bottom: 1rem;
       border-bottom: 1px solid #eee;
     }
-    
+
     .instructions {
       margin-top: 2rem;
       padding: 1rem;
@@ -138,29 +137,29 @@ import { QuickStartPlaybackComponent } from '../player/quick-start-playback.comp
       border-radius: 8px;
       border-left: 4px solid #1db954;
     }
-    
+
     .instructions h3 {
       margin-top: 0;
       color: #333;
     }
-    
+
     .instructions ol {
       margin: 1rem 0;
     }
-    
+
     .instructions li {
       margin-bottom: 0.5rem;
     }
-    
+
     .instructions strong {
       color: #1db954;
     }
-    
+
     .unauthenticated-content {
       text-align: center;
       padding: 2rem;
     }
-    
+
     .unauthenticated-content h2 {
       color: #333;
       margin-bottom: 1rem;
@@ -178,10 +177,10 @@ export class HomeComponent implements OnInit {
     const token = this.auth.accessToken();
     if (token) {
       console.log('🎵 Setting up Spotify services');
-      
+
       // Set access token for player service
       this.spotifyPlayer.setAccessToken(token);
-      
+
       // Load user profile
       this.userService.fetchUserProfile().subscribe();
     }

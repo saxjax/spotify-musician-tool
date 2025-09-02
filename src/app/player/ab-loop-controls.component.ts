@@ -10,7 +10,7 @@ import { SpotifyPlayerService } from './spotify-player.service';
   template: `
     <div class="ab-loop-controls">
       <h3>AB Loop Controls</h3>
-      
+
       <!-- Current Track Info -->
       @if (playerStore.currentTrack(); as track) {
         <div class="track-info">
@@ -24,33 +24,33 @@ import { SpotifyPlayerService } from './spotify-player.service';
 
       <!-- Playback Controls -->
       <div class="playback-controls">
-        <button 
-          (click)="spotifyPlayer.seekRelative(-10000)"
+        <button
+          (click)="spotifyPlayer.seekRelative(-5000)"
           class="seek-btn"
-          title="Skip back 10 seconds">
-          ⏪ 10s
+          title="Skip back 5 seconds">
+          ⏪ 5s
         </button>
-        
-        <button 
+
+        <button
           (click)="spotifyPlayer.togglePlayback()"
           class="play-pause-btn"
           [class.playing]="playerStore.isPlaying()">
           {{ playerStore.isPlaying() ? '⏸️' : '▶️' }}
         </button>
 
-        <button 
+        <button
           (click)="startPlayingCurrentSong()"
           class="start-playing-btn"
           [disabled]="playerStore.isPlaying()"
           title="Start playing the currently selected song">
           🎵 Start Playing
         </button>
-        
-        <button 
-          (click)="spotifyPlayer.seekRelative(10000)"
+
+        <button
+          (click)="spotifyPlayer.seekRelative(5000)"
           class="seek-btn"
-          title="Skip forward 10 seconds">
-          10s ⏩
+          title="Skip forward 5 seconds">
+          5s ⏩
         </button>
       </div>
 
@@ -62,13 +62,25 @@ import { SpotifyPlayerService } from './spotify-player.service';
             <span class="time">
               {{ playerStore.loopA() !== null ? formatTime(playerStore.loopA()!) : 'Not set' }}
             </span>
-            <button 
+                    <button
+          (click)="spotifyPlayer.setLoopPointA(-500); spotifyPlayer.jumpToLoopA()"
+          class="seek-btn"
+          title="Skip back 0 .5 seconds">
+          ⏪ 0.5s
+        </button>
+            <button
               (click)="spotifyPlayer.setLoopPointA()"
               class="set-point-btn">
               Set A
             </button>
+            <button
+          (click)="spotifyPlayer.setLoopPointA(500); spotifyPlayer.jumpToLoopA() "
+          class="seek-btn"
+          title="Skip back 0 .5 seconds">
+           0.5s ⏩
+        </button>
             @if (playerStore.loopA() !== null) {
-              <button 
+              <button
                 (click)="spotifyPlayer.jumpToLoopA()"
                 class="jump-btn"
                 title="Jump to point A">
@@ -82,13 +94,25 @@ import { SpotifyPlayerService } from './spotify-player.service';
             <span class="time">
               {{ playerStore.loopB() !== null ? formatTime(playerStore.loopB()!) : 'Not set' }}
             </span>
-            <button 
+            <button
+          (click)="spotifyPlayer.setLoopPointB(-500); spotifyPlayer.jumpToLoopB()"
+          class="seek-btn"
+          title="Skip back 0 .5 seconds">
+          ⏪ 0.5s
+        </button>
+            <button
               (click)="spotifyPlayer.setLoopPointB()"
               class="set-point-btn">
               Set B
             </button>
+            <button
+          (click)="spotifyPlayer.setLoopPointB(500); spotifyPlayer.jumpToLoopB()"
+          class="seek-btn"
+          title="Skip back 0 .5 seconds">
+           0.5s ⏩
+        </button>
             @if (playerStore.loopB() !== null) {
-              <button 
+              <button
                 (click)="spotifyPlayer.jumpToLoopB()"
                 class="jump-btn"
                 title="Jump to point B">
@@ -99,15 +123,15 @@ import { SpotifyPlayerService } from './spotify-player.service';
         </div>
 
         <div class="loop-actions">
-          <button 
+          <button
             (click)="spotifyPlayer.toggleAbLoop()"
             class="loop-toggle-btn"
             [class.active]="playerStore.isLooping()"
             [disabled]="playerStore.loopA() === null || playerStore.loopB() === null">
             {{ playerStore.isLooping() ? 'Stop Loop' : 'Start Loop' }}
           </button>
-          
-          <button 
+
+          <button
             (click)="spotifyPlayer.clearLoopPoints()"
             class="clear-btn">
             Clear Points
@@ -118,34 +142,34 @@ import { SpotifyPlayerService } from './spotify-player.service';
       <!-- Progress Bar with Loop Points -->
       <div class="progress-container">
         <div class="progress-bar" (click)="onProgressClick($event)">
-          <div 
+          <div
             class="progress-fill"
             [style.width.%]="getProgressPercentage()">
           </div>
-          
+
           <!-- Loop Point A Marker -->
           @if (playerStore.loopA() !== null) {
-            <div 
+            <div
               class="loop-marker loop-a"
               [style.left.%]="getLoopAPercentage()"
               title="Loop Point A">
               A
             </div>
           }
-          
+
           <!-- Loop Point B Marker -->
           @if (playerStore.loopB() !== null) {
-            <div 
+            <div
               class="loop-marker loop-b"
               [style.left.%]="getLoopBPercentage()"
               title="Loop Point B">
               B
             </div>
           }
-          
+
           <!-- Loop Range Highlight -->
           @if (playerStore.loopA() !== null && playerStore.loopB() !== null) {
-            <div 
+            <div
               class="loop-range"
               [class.active]="playerStore.isLooping()"
               [style.left.%]="getLoopAPercentage()"
@@ -478,7 +502,7 @@ export class AbLoopControlsComponent implements OnInit, OnDestroy {
     const loopA = this.playerStore.loopA();
     const loopB = this.playerStore.loopB();
     const duration = this.playerStore.durationMs();
-    
+
     if (loopA !== null && loopB !== null && duration > 0) {
       return ((loopB - loopA) / duration) * 100;
     }
@@ -491,7 +515,7 @@ export class AbLoopControlsComponent implements OnInit, OnDestroy {
     const percentage = (event.clientX - rect.left) / rect.width;
     const duration = this.playerStore.durationMs();
     const newPosition = Math.floor(duration * percentage);
-    
+
     this.spotifyPlayer.seekToPosition(newPosition).subscribe();
   }
 
