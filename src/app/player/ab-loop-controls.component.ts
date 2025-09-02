@@ -62,23 +62,23 @@ import { SpotifyPlayerService } from './spotify-player.service';
             <span class="time">
               {{ playerStore.loopA() !== null ? formatTime(playerStore.loopA()!) : 'Not set' }}
             </span>
-                    <button
-          (click)="spotifyPlayer.setLoopPointA(-500); spotifyPlayer.jumpToLoopA()"
-          class="seek-btn"
-          title="Skip back 0 .5 seconds">
-          ⏪ 0.5s
-        </button>
+            <button
+              (click)="spotifyPlayer.setLoopPointA(-500); spotifyPlayer.jumpToLoopA()"
+              class="micro-seek-btn"
+              title="Adjust point A back 0.5 seconds">
+              ⏪ 0.5s
+            </button>
             <button
               (click)="spotifyPlayer.setLoopPointA()"
               class="set-point-btn">
               Set A
             </button>
             <button
-          (click)="spotifyPlayer.setLoopPointA(500); spotifyPlayer.jumpToLoopA() "
-          class="seek-btn"
-          title="Skip back 0 .5 seconds">
-           0.5s ⏩
-        </button>
+              (click)="spotifyPlayer.setLoopPointA(500); spotifyPlayer.jumpToLoopA()"
+              class="micro-seek-btn"
+              title="Adjust point A forward 0.5 seconds">
+              0.5s ⏩
+            </button>
             @if (playerStore.loopA() !== null) {
               <button
                 (click)="spotifyPlayer.jumpToLoopA()"
@@ -95,22 +95,22 @@ import { SpotifyPlayerService } from './spotify-player.service';
               {{ playerStore.loopB() !== null ? formatTime(playerStore.loopB()!) : 'Not set' }}
             </span>
             <button
-          (click)="spotifyPlayer.setLoopPointB(-500); spotifyPlayer.jumpToLoopB()"
-          class="seek-btn"
-          title="Skip back 0 .5 seconds">
-          ⏪ 0.5s
-        </button>
+              (click)="spotifyPlayer.setLoopPointB(-500); spotifyPlayer.jumpToLoopB()"
+              class="micro-seek-btn"
+              title="Adjust point B back 0.5 seconds">
+              ⏪ 0.5s
+            </button>
             <button
               (click)="spotifyPlayer.setLoopPointB()"
               class="set-point-btn">
               Set B
             </button>
             <button
-          (click)="spotifyPlayer.setLoopPointB(500); spotifyPlayer.jumpToLoopB()"
-          class="seek-btn"
-          title="Skip back 0 .5 seconds">
-           0.5s ⏩
-        </button>
+              (click)="spotifyPlayer.setLoopPointB(500); spotifyPlayer.jumpToLoopB()"
+              class="micro-seek-btn"
+              title="Adjust point B forward 0.5 seconds">
+              0.5s ⏩
+            </button>
             @if (playerStore.loopB() !== null) {
               <button
                 (click)="spotifyPlayer.jumpToLoopB()"
@@ -231,6 +231,7 @@ import { SpotifyPlayerService } from './spotify-player.service';
       margin-bottom: 25px;
     }
 
+    /* Button Styles */
     .play-pause-btn {
       width: 50px;
       height: 50px;
@@ -304,10 +305,8 @@ import { SpotifyPlayerService } from './spotify-player.service';
       min-width: 60px;
     }
 
-    .time {
-      font-family: monospace;
-      min-width: 80px;
-      color: #666;
+    .micro-seek-btn:hover {
+      background: #f5f5f5;
     }
 
     .set-point-btn {
@@ -337,12 +336,6 @@ import { SpotifyPlayerService } from './spotify-player.service';
 
     .jump-btn:hover {
       background: #1e7e34;
-    }
-
-    .loop-actions {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
     }
 
     .loop-toggle-btn {
@@ -379,6 +372,41 @@ import { SpotifyPlayerService } from './spotify-player.service';
     .clear-btn:hover {
       background: #6c757d;
       color: white;
+    }
+
+    /* Layout Styles */
+    .loop-controls {
+      margin-bottom: 25px;
+    }
+
+    .loop-points {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .loop-point {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+      min-width: 60px;
+    }
+
+    .time {
+      font-family: monospace;
+      min-width: 80px;
+      color: #666;
+    }
+
+    .loop-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
     }
 
     .progress-container {

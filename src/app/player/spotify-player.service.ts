@@ -328,7 +328,7 @@ export class SpotifyPlayerService {
     const loopA = this.playerStore.loopA() && adjustmentInMs? this.playerStore.loopA()! + adjustmentInMs : currentPosition;
 
     this.playerStore.setLoopPoints(loopA, loopB);
-    console.log(`Loop point A set at ${currentPosition}ms`);
+    console.log(`Loop point A set at ${loopA}ms`);
   }
 
   /**
@@ -337,9 +337,11 @@ export class SpotifyPlayerService {
   setLoopPointB(adjustmentInMs: number = 0): void {
     const currentPosition = this.playerStore.positionMs();
     const loopA = this.playerStore.loopA();
+    const loopB = this.playerStore.loopB() && adjustmentInMs? this.playerStore.loopB()! + adjustmentInMs : currentPosition;
 
-    this.playerStore.setLoopPoints(loopA, currentPosition);
-    console.log(`Loop point B set at ${currentPosition}ms`);
+
+    this.playerStore.setLoopPoints(loopA, loopB);
+    console.log(`Loop point B set at ${loopB}ms`);
   }
 
   /**
