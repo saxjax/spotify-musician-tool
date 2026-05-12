@@ -1,0 +1,27 @@
+// Saxjax theme tokens (derived from saxjax_dk color palette)
+$primary: #3498db;
+$secondary: #2ecc71;
+$accent: #e74c3c;
+$background-dark: #0a0c12; // deep dark
+$card-bg: linear-gradient(180deg, rgba(16,20,30,0.98), rgba(8,10,14,0.98));
+$surface-border: rgba(255,255,255,0.03);
+$muted-text: #cfdde9;
+$control-accent: #00c168;
+
+// Utility mixins
+@mixin card() {
+  background: $card-bg;
+  border-radius: 0.6rem;
+  padding: 0.6rem;
+  border: 1px solid $surface-border;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+}
+
+@mixin button-base() {
+  padding: 0.45rem 1rem;
+  border-radius: 0.45rem;
+  background: rgba(255,255,255,0.02);
+  color: $muted-text;
+  border: 1px solid rgba(255,255,255,0.06);
+  cursor: pointer;
+}
