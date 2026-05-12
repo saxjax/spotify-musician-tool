@@ -1,52 +1,53 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SpotifyUserService } from '../../../services/spotify-user.service';
-import { SpotifyAuthService } from '../../../services/spotify-auth.service';
 
 @Component({
   selector: 'app-user-profile',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
-})
-export class UserProfileComponent implements OnInit {
-  userService = inject(SpotifyUserService);
-  private auth = inject(SpotifyAuthService);
-
-  ngOnInit(): void {
-    // Auto-load profile if authenticated
-    if (this.auth.isAuthenticated() && !this.userService.userProfile()) {
-      this.loadProfile();
+  template: `
+    @if (userService.isLoading()) {
+      <p>Loading profile...</p>
+    } @else if (userService.error()) {
+      <p class="error">{{ userService.error() }}</p>
+    } @else if (userService.userProfile()) {
+      <div class="user-profile">
+        @if (userService.avatarUrl(); as avatarUrl) {
+          <img [src]="avatarUrl" [alt]="userService.displayName()" class="avatar" />
+        }
+        <div class="profile-info">
+          <span class="name">{{ userService.displayName() }}</span>
+          <span class="account-type">{{ userService.isPremium() ? 'Premium' : 'Free' }}</span>
+        </div>
+      </div>
     }
-  }
-
-  loadProfile(): void {
-    this.userService.fetchUserProfile().subscribe();
-  }
-
-  refreshProfile(): void {
-    this.userService.fetchUserProfile().subscribe();
-  }
-
-  retry(): void {
-    this.loadProfile();
-  }
-
-  logout(): void {
-    this.userService.clearProfile();
-    this.auth.logout();
-    // Optionally redirect to login page
-    window.location.href = '/';
-  }
-
-  getInitials(displayName: string): string {
-    return displayName
-      .split(' ')
-      .map(name => name.charAt(0))
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  }
+  `,
+  styles: `
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .name {
+      font-weight: 600;
+    }
+    .account-type {
+      font-size: 0.85rem;
+      color: #888;
+    }
+    .error {
+      color: #e74c3c;
+    }
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class UserProfileComponent {
+  userService = inject(SpotifyUserService);
 }

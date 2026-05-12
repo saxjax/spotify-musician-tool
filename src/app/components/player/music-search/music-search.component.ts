@@ -1,115 +1,115 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SpotifyPlayerService, SpotifyTrack } from '../../../services/spotify-player.service';
-import { SpotifyUserService } from '../../../services/spotify-user.service';
 
 @Component({
   selector: 'app-music-search',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './music-search.component.html',
-  styleUrl: './music-search.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [FormsModule],
+  template: `
+    <div class="music-search">
+      <div class="search-bar">
+        <input
+          type="text"
+          [(ngModel)]="query"
+          placeholder="Search for a song..."
+          (keyup.enter)="search()"
+        />
+        <button type="button" (click)="search()">Search</button>
+      </div>
+      @if (results().length > 0) {
+        <ul class="results">
+          @for (track of results(); track track.id) {
+            <li class="track-item">
+              @if (track.album.images.length > 0) {
+                <img [src]="track.album.images[track.album.images.length - 1].url" [alt]="track.album.name" class="album-art" />
+              }
+              <div class="track-info">
+                <span class="track-name">{{ track.name }}</span>
+                <span class="artist-name">{{ track.artists[0]?.name }}</span>
+              </div>
+              <button type="button" (click)="play(track)" class="play-btn">Play</button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  `,
+  styles: `
+    .music-search {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .search-bar {
+      display: flex;
+      gap: 0.5rem;
+    }
+    input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .results {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .track-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    .album-art {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+    }
+    .track-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .track-name {
+      font-weight: 500;
+    }
+    .artist-name {
+      font-size: 0.85rem;
+      color: #888;
+    }
+    .play-btn {
+      background: #1db954;
+      color: white;
+      border: none;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      cursor: pointer;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MusicSearchComponent {
-  private spotifyPlayer = inject(SpotifyPlayerService);
-  userService = inject(SpotifyUserService);
+  private playerService = inject(SpotifyPlayerService);
 
-  // Component state
-  searchQuery = '';
-  selectedDeviceId = '';
+  query = '';
+  results = signal<SpotifyTrack[]>([]);
 
-  // Signals
-  searchResults = signal<SpotifyTrack[]>([]);
-  availableDevices = signal<Array<{ id: string; name: string; type: string; is_active: boolean; }>>([]);
-  isSearching = signal(false);
-  isLoading = signal(false);
-  searchError = signal<string | null>(null);
-  selectedTrack = signal<SpotifyTrack | null>(null);
-
-  constructor() {
-    // Load available devices on component init
-    this.refreshDevices();
-  }
-
-  searchTracks(): void {
-    if (!this.searchQuery.trim()) return;
-
-    this.isSearching.set(true);
-    this.searchError.set(null);
-
-    this.spotifyPlayer.searchTracks(this.searchQuery.trim(), 20).subscribe({
-      next: (result: any) => {
-        this.searchResults.set(result.tracks.items);
-        this.isSearching.set(false);
-        console.log(`Found ${result.tracks.items.length} tracks for "${this.searchQuery}"`);
-      },
-      error: (error: any) => {
-        console.error('Search error:', error);
-        this.searchError.set('Failed to search tracks. Please try again.');
-        this.isSearching.set(false);
-        this.searchResults.set([]);
-      }
+  search(): void {
+    if (!this.query.trim()) return;
+    this.playerService.searchTracks(this.query).subscribe((res) => {
+      this.results.set(res.tracks.items);
     });
   }
 
-  playTrack(track: SpotifyTrack): void {
-    if (!this.userService.isPremium()) {
-      alert('Spotify Premium is required to start playback from this app.');
-      return;
-    }
-
-    this.isLoading.set(true);
-    this.selectedTrack.set(track);
-    this.searchError.set(null);
-
-    const deviceId = this.selectedDeviceId || undefined;
-
-    this.spotifyPlayer.playTrack(track.uri, deviceId).subscribe({
-      next: () => {
-        console.log(`Started playing: ${track.name} by ${this.getArtistNames(track)}`);
-        this.isLoading.set(false);
-        this.selectedTrack.set(null);
-      },
-      error: (error: any) => {
-        console.error('Playback error:', error);
-        this.searchError.set(`Failed to play "${track.name}". Make sure Spotify is open on a device.`);
-        this.isLoading.set(false);
-        this.selectedTrack.set(null);
-      }
-    });
-  }
-
-  refreshDevices(): void {
-    this.spotifyPlayer.getAvailableDevices().subscribe({
-      next: (result: any) => {
-        this.availableDevices.set(result.devices);
-        console.log(`Found ${result.devices.length} available devices`);
-      },
-      error: (error: any) => {
-        console.error('Error getting devices:', error);
-      }
-    });
-  }
-
-  getArtistNames(track: SpotifyTrack): string {
-    return track.artists.map((artist: any) => artist.name).join(', ');
-  }
-
-  formatDuration(durationMs: number): string {
-    const minutes = Math.floor(durationMs / 60000);
-    const seconds = Math.floor((durationMs % 60000) / 1000);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  }
-
-  isTrackPlaying(track: SpotifyTrack): boolean {
-    // This would need to be connected to the current playback state
-    // For now, we'll return false as a placeholder
-    return false;
-  }
-
-  clearError(): void {
-    this.searchError.set(null);
+  play(track: SpotifyTrack): void {
+    this.playerService.playTrack(track.uri).subscribe();
   }
 }

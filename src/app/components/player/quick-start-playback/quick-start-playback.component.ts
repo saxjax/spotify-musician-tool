@@ -1,70 +1,82 @@
-import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SpotifyPlayerService } from '../../../services/spotify-player.service';
-import { SpotifyUserService } from '../../../services/spotify-user.service';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { PlayerStore } from '../../../services/player.store';
+import { SpotifyPlayerService } from '../../../services/spotify-player.service';
 
 @Component({
   selector: 'app-quick-start-playback',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './quick-start-playback.component.html',
-  styleUrl: './quick-start-playback.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  template: `
+    <div class="quick-start">
+      @if (store.currentTrack(); as track) {
+        <div class="now-playing">
+          <span class="label">Now Playing:</span>
+          <span class="track-name">{{ track.name }}</span>
+          <span class="artist">{{ track.artists?.[0]?.name }}</span>
+        </div>
+        <div class="playback-controls">
+          <button type="button" (click)="togglePlay()">
+            {{ store.isPlaying() ? '⏸ Pause' : '▶ Play' }}
+          </button>
+        </div>
+      } @else {
+        <div class="no-track">
+          <p>No track currently playing.</p>
+          <p>Open Spotify and start playing a song, then come back here.</p>
+          <button type="button" (click)="refreshState()">Refresh Playback State</button>
+        </div>
+      }
+    </div>
+  `,
+  styles: `
+    .quick-start {
+      padding: 1rem;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+    .now-playing {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .label {
+      font-size: 0.8rem;
+      color: #888;
+      text-transform: uppercase;
+    }
+    .track-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .artist {
+      color: #666;
+    }
+    button {
+      padding: 0.5rem 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #f5f5f5;
+      cursor: pointer;
+    }
+    .no-track {
+      text-align: center;
+    }
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuickStartPlaybackComponent {
-  private spotifyPlayer = inject(SpotifyPlayerService);
-  userService = inject(SpotifyUserService);
-  playerStore = inject(PlayerStore);
+  store = inject(PlayerStore);
+  private playerService = inject(SpotifyPlayerService);
 
-  // Component state
-  isLoading = signal(false);
-  error = signal<string | null>(null);
-
-  startPlayback(): void {
-    if (!this.userService.isPremium()) {
-      this.error.set('Spotify Premium is required to control playback');
-      return;
+  togglePlay(): void {
+    if (this.store.isPlaying()) {
+      this.playerService.pausePlayback().subscribe();
+    } else {
+      this.playerService.resumePlayback().subscribe();
     }
-
-    this.isLoading.set(true);
-    this.error.set(null);
-
-    console.log('🎵 Starting playback of current/selected song');
-
-    this.spotifyPlayer.resumePlayback().subscribe({
-      next: () => {
-        console.log('✅ Playback started successfully');
-        this.isLoading.set(false);
-      },
-      error: (error: any) => {
-        console.error('❌ Failed to start playback:', error);
-        this.isLoading.set(false);
-
-        if (error.status === 404) {
-          this.error.set('No active device found. Please open Spotify on a device first.');
-        } else if (error.status === 403) {
-          this.error.set('Playback failed. Make sure a song is selected in Spotify.');
-        } else {
-          this.error.set('Failed to start playback. Please make sure Spotify is open and a song is selected.');
-        }
-      }
-    });
   }
 
-  pausePlayback(): void {
-    this.spotifyPlayer.pausePlayback().subscribe({
-      next: () => {
-        console.log('✅ Playback paused');
-      },
-      error: (error: any) => {
-        console.error('❌ Failed to pause:', error);
-        this.error.set('Failed to pause playback');
-      }
-    });
-  }
-
-  clearError(): void {
-    this.error.set(null);
+  refreshState(): void {
+    this.playerService.getCurrentPlaybackState().subscribe();
   }
 }
