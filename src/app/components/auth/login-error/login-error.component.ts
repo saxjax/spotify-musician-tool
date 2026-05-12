@@ -48,7 +48,10 @@ export class AuthCallbackComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const result = await this.auth.handleCallbackFromUrl(window.location.href);
     if (result.ok) {
-      this.router.navigate(['/']);
+      // Navigate to the app base href so we return to the musician app
+      const baseHref = document.querySelector('base')?.getAttribute('href') || '/';
+      // Use navigateByUrl to ensure the full base path is used (handles subpath hosting)
+      this.router.navigateByUrl(baseHref, { replaceUrl: true });
     } else {
       this.error.set(result.error ?? 'Unknown error');
     }
