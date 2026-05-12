@@ -36,7 +36,7 @@ export class PlayerStore {
 
   clampedPitch = computed(() => {
     const pitch = this._pitchSemitones();
-    return Math.max(-12, Math.min(12, pitch));
+    return Math.max(-6, Math.min(6, pitch));
   });
 
   // Actions

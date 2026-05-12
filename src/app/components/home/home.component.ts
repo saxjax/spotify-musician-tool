@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/cor
 import { SpotifyAuthService } from '../../services/spotify-auth.service';
 import { SpotifyUserService } from '../../services/spotify-user.service';
 import { AbLoopControlsComponent } from '../player/ab-loop-controls/ab-loop-controls.component';
+import { PlayheadSliderComponent } from '../player/playhead-slider/playhead-slider.component';
 import { UserProfileComponent } from '../user/user-profile/user-profile.component';
 import { MusicSearchComponent } from '../player/music-search/music-search.component';
 import { QuickStartPlaybackComponent } from '../player/quick-start-playback/quick-start-playback.component';
@@ -10,7 +11,7 @@ import { SpotifyPlayerService } from '../../services/spotify-player.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AbLoopControlsComponent, UserProfileComponent, MusicSearchComponent, QuickStartPlaybackComponent],
+  imports: [AbLoopControlsComponent, PlayheadSliderComponent, UserProfileComponent, MusicSearchComponent, QuickStartPlaybackComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

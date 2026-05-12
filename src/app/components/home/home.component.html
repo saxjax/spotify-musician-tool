@@ -11,6 +11,7 @@
       <div class="controls-section">
         <h3>AB Loop Controls</h3>
         <p>Once music is playing, use these controls to practice specific sections.</p>
+        <app-playhead-slider></app-playhead-slider>
         <app-ab-loop-controls></app-ab-loop-controls>
       </div>
 
@@ -36,6 +37,7 @@
           <li><strong>Practice:</strong> Use the controls to jump to loop points, skip around, or adjust playback</li>
         </ol>
         <p><strong>Note:</strong> You need Spotify Premium for playback control to work.</p>
+        <p><strong>Limitation:</strong> The Spotify API does not support transpose (pitch shift) or tempo change. These features would require the Web Playback SDK with Web Audio API processing.</p>
       </div>
     </div>
   } @else {
