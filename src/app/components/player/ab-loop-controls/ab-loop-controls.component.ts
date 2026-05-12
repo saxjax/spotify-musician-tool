@@ -27,27 +27,45 @@ import { SpotifyPlayerService } from '../../../services/spotify-player.service';
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      padding: 0.6rem;
+      border-radius: 0.6rem;
+      background: linear-gradient(180deg, rgba(16,20,30,0.9), rgba(8,10,14,0.9));
+      border: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 24px rgba(2,6,23,0.55);
     }
+
     .loop-buttons, .loop-actions {
       display: flex;
       gap: 0.5rem;
     }
+
     button {
-      padding: 0.5rem 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background: #f5f5f5;
+      padding: 0.45rem 1rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 0.45rem;
+      background: rgba(255,255,255,0.02);
+      color: #d8e6f2;
       cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease;
+      font-size: 0.95rem;
     }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
     button.active {
-      background: #1db954;
+      background: linear-gradient(180deg, #00c168, #00894c);
       color: white;
-      border-color: #1db954;
+      border-color: rgba(0,166,90,0.85);
+      box-shadow: 0 8px 18px rgba(0,166,90,0.12);
     }
+
     button.looping {
-      background: #e74c3c;
+      background: linear-gradient(180deg, #e74c3c, #c0392b);
       color: white;
-      border-color: #e74c3c;
+      border-color: rgba(231,76,60,0.9);
+      box-shadow: 0 8px 18px rgba(231,76,60,0.12);
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
